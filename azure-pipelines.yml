@@ -1,0 +1,14 @@
+variables:
+  ARM_PASS: $(adminPass)
+
+trigger:
+- none
+
+pool: eland-pool
+
+steps:
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'webapp-linux-managed-mysql/'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
