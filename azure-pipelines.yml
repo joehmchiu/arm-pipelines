@@ -1,9 +1,4 @@
 variables:
-- task: AzureKeyVault@2
-  inputs:
-    KeyVaultName: 'kv-box-001'
-    SecretsFilter: '*'
-    RunAsPreJob: true
   ARM_PASS: $(adminPass)
 
 trigger:
