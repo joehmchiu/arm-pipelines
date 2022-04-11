@@ -1,0 +1,31 @@
+variables:
+  ARM_PASS: $(adminPass)
+
+trigger:
+- none
+
+pool: eland-pool
+
+steps:
+  
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'Your-Azure-Subscription'
+    KeyVaultName: 'Your-Key-Vault-Name'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(helloworld) > secret.txt'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: secret.txt
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
