@@ -12,3 +12,16 @@ steps:
     SourceFolder: 'webapp-linux-managed-mysql/'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure-connection-manager'
+    subscriptionId: 'dafdecca-01a5-4a82-bba0-489c3c47f4d2'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-arm-test-001'
+    location: 'australiaeast'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.json'
+    csmParametersFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.parameters.json'
+    overrideParameters: '-siteName $(siteName) -administratorLogin $(adminUser) -administratorLoginPassword $(ARM_PASS)'
+    deploymentMode: 'Incremental'
