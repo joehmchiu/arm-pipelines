@@ -7,15 +7,6 @@ trigger:
 pool: eland-pool
 
 steps:
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Azure-connection-manager'
-    KeyVaultName: 'kv-box-001'
-    SecretsFilter: '*'
-    RunAsPreJob: true
-- task: CmdLine@2
-  inputs:
-    script: 'echo $(helloworld) > /tmp/secret.txt'
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'webapp-linux-managed-mysql/'
