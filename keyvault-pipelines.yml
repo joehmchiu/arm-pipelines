@@ -10,11 +10,10 @@ steps:
 
 - task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'Azure-connection-manager'
+    azureSubscription: 'KV-Service-Connection'
     KeyVaultName: 'kv-box-001'
     SecretsFilter: '*'
-    RunAsPreJob: false
-
+    RunAsPreJob: true
 - task: CmdLine@2
   inputs:
     script: 'echo $(helloworld) > secret.txt'
