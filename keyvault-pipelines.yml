@@ -10,7 +10,7 @@ steps:
 
 - task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'dafdecca-01a5-4a82-bba0-489c3c47f4d2'
+    azureSubscription: 'Azure-connection-manager'
     KeyVaultName: 'kv-box-001'
     SecretsFilter: '*'
     RunAsPreJob: false
