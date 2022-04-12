@@ -10,7 +10,7 @@ steps:
 
 - task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'Azure Automation Demo(dafdecca-01a5-4a82-bba0-489c3c47f4d2)'
+    azureSubscription: 'dafdecca-01a5-4a82-bba0-489c3c47f4d2'
     KeyVaultName: 'kv-box-001'
     SecretsFilter: '*'
     RunAsPreJob: false
