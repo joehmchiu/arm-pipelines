@@ -37,6 +37,8 @@ stages:
     steps:
     - script: |
         az -v
+        ansible --version
+        terraform version
         az account list 
         az account list | jq .
 
