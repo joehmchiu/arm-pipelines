@@ -1,0 +1,11 @@
+
+trigger:
+- none
+
+pool: eland-pool
+
+steps:
+- checkout: self
+  path: /tmp/foo
+- checkout: github://joehmchiu/arm-mysql-pipeline
+  path: /tmp/bar
