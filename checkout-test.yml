@@ -14,3 +14,4 @@ resources:
 steps:
 - checkout: self
 - checkout: foo
+  path: /tmp/foo
