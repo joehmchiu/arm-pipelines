@@ -26,16 +26,6 @@ pool:
 trigger:
 - none
 
-resources:
-  repositories:
-  - repository: foobar
-    type: git
-    endpoint: https://github.com/karbonhq
-    name: karbonhq-arm-templates
-    ref: master
-
-steps:
-- checkout: foobar
 
 stages:
 - stage: PreTasks
