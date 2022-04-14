@@ -28,24 +28,6 @@ trigger:
 
 
 stages:
-- stage: PreTasks
-  displayName: Pre Tasks
-  jobs:
-  - job: init
-    displayName: Display the file structure
-    steps:
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: 'dev/'
-        Contents: '**'
-        TargetFolder: '$(workspace)'
-    - script: |
-        dir
-        pwd
-        echo '$(workspace)'
-        echo '$(Agent.BuildDirectory)'
-        echo '$(System.DefaultWorkingDirectory)'
-        echo "{$(env),$(prefix)} - update #001"
 
 - stage: DevTasks
   displayName: Dev Tasks
