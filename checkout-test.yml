@@ -12,4 +12,3 @@ pool: eland-pool
 
 steps:
 - checkout: self
-  path: /tmp/foo
