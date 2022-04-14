@@ -1,0 +1,72 @@
+# devops: Transformer Deployment 
+
+parameters:
+  - name: ENV
+    displayName: Choose a Working Environment
+    default: 'DEV2'
+    type: string
+    values:
+      - 'DEV2'
+      - 'STAGE2'
+      - 'LIVE'
+  - name: PREFIX
+    displayName: Prefix the Source Name
+    default: 'Transformer'
+    type: string
+
+# Set variables
+variables:
+  env: ${{ lower(parameters.ENV) }}
+  prefix: ${{ lower(parameters.PREFIX) }}
+  workspace: '/tmp/identity-app-server-workspace'
+
+pool:
+    vmImage: 'ubuntu-latest'
+
+trigger:
+- none
+
+resources:
+  repositories:
+  - repository: foobar
+    type: git
+    endpoint: https://github.com/karbonhq
+    name: karbonhq-arm-templates
+    ref: master
+
+steps:
+- checkout: foobar
+
+stages:
+- stage: PreTasks
+  displayName: Pre Tasks
+  jobs:
+  - job: init
+    displayName: Display the file structure
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'dev/'
+        Contents: '**'
+        TargetFolder: '$(workspace)'
+    - script: |
+        dir
+        pwd
+        echo '$(workspace)'
+        echo '$(Agent.BuildDirectory)'
+        echo '$(System.DefaultWorkingDirectory)'
+        echo "{$(env),$(prefix)} - update #001"
+
+- stage: DevTasks
+  displayName: Dev Tasks
+  jobs:
+  - job: dev
+    displayName: Testing the Azure CLI Availibity
+    steps:
+    - script: |
+        az -v
+        az account list 
+        az account list | jq .
+
+
+
