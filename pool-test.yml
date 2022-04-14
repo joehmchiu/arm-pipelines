@@ -39,6 +39,7 @@ stages:
         az -v
         ansible --version
         terraform version
+        az login
         az account list 
         az account list | jq .
 
