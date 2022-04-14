@@ -4,6 +4,12 @@ trigger:
 
 pool: eland-pool
 
+resources:
+  repositories:
+  - repository: tools
+    type: github
+    endpoint: joehmchiu
+
 steps:
 - checkout: self
   path: /tmp/foo
