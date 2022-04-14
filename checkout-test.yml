@@ -4,14 +4,14 @@ trigger:
 
 pool: eland-pool
 
-resources:
-  repositories:
-  - repository:  arm-pipelines
-    type: github
-    endpoint: joehmchiuGithub
+# resources:
+#   repositories:
+#   - repository: arm-pipelines
+#     type: github
+#     endpoint: joehmchiuGithub
 
 steps:
 - checkout: self
   path: /tmp/foo
-- checkout: github://joehmchiu/arm-mysql-pipeline
+- checkout: git://joehmchiu/arm-mysql-pipeline
   path: /tmp/bar
