@@ -6,7 +6,7 @@ pool: eland-pool
 
 resources:
   repositories:
-  - repository: tools
+  - repository:  arm-pipelines
     type: github
     endpoint: joehmchiuGithub
 
