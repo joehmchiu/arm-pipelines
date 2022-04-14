@@ -8,7 +8,7 @@ resources:
   repositories:
   - repository: tools
     type: github
-    endpoint: joehmchiu
+    endpoint: joehmchiuGithub
 
 steps:
 - checkout: self
