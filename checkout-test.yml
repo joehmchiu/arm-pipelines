@@ -13,5 +13,3 @@ pool: eland-pool
 steps:
 - checkout: self
   path: /tmp/foo
-- checkout: github://joehmchiuGithub/arm-mysql-pipeline
-  path: /tmp/bar
