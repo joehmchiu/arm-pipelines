@@ -9,7 +9,7 @@ pool: eland-pool
 steps:
 - task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'KV-Service-Connection'
+    azureSubscription: 'KV-Service-Connection-001'
     KeyVaultName: 'kv-box-001'
     SecretsFilter: '*'
     RunAsPreJob: true
