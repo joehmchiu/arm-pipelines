@@ -31,7 +31,9 @@ steps:
     RunAsPreJob: true
 - task: CmdLine@2
   inputs:
-    script: 'echo $($(key)) > secret.txt'
+    script: |
+      'echo $($(key))'
+      'echo $($(key)) > secret.txt'
 
 - task: CopyFiles@2
   inputs:
