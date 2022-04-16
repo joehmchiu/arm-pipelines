@@ -17,8 +17,8 @@ variables:
   env: ${{ lower(parameters.ENV) }}
   key: ${{ lower(parameters.KEY) }}
   
-trigger:
-- none
+# trigger:
+# - none
 
 pool: eland-pool
 
