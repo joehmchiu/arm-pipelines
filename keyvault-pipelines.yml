@@ -43,7 +43,7 @@ steps:
     foo='echo "Foo: \$($(key))" >> secret.txt'
     echo $foo
     eval $foo
-    bar="\$(\$(key))"
+    bar="$($(key))"
     echo $bar
     echo "Bar: $bar" >> secret.txt
     echo "helloworld: $(helloworld)" >> secret.txt
