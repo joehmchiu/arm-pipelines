@@ -14,8 +14,13 @@ parameters:
 
 # Set variables
 variables:
-  env: ${{ lower(parameters.ENV) }}
-  key: ${{ lower(parameters.KEY) }}
+- env: ${{ lower(parameters.ENV) }}
+- key:
+  ${{ if ne(variables['key'], '') }}:
+    value: variables['key']
+  ${{ else }}:
+    value: lower(parameters.KEY)
+  
   
 trigger:
 - none
