@@ -40,7 +40,7 @@ steps:
     
 - script: |
     echo $(foobar) > secret.txt
-    foo="echo 'Foo: \$($(key))' >> secret.txt"
+    foo='echo "Foo: \$($(key))" >> secret.txt'
     echo $foo
     eval $foo
     echo "helloworld: $(helloworld)" >> secret.txt
@@ -51,7 +51,7 @@ steps:
     echo "Key: $(foo)" >> secret.txt
 
 - script: |
-    foo="echo 'Test: \\$\($(test)\)' >> secret.txt"
+    foo="echo 'Test: \$($(test))' >> secret.txt"
     echo $(test-001)
     echo $foo
     eval $foo
