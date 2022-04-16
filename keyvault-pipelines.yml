@@ -17,8 +17,8 @@ variables:
   env: ${{ lower(parameters.ENV) }}
   key: ${{ lower(parameters.KEY) }}
   
-# trigger:
-# - none
+trigger:
+- none
 
 pool: eland-pool
 
@@ -41,9 +41,9 @@ steps:
     echo $(helloworld) >> secret.txt
     echo $(helloworld)
     echo "Key: $(key)"
-    echo "Key: $(key) >> secret.txt"
+    echo "Key: $(key)" >> secret.txt"
     echo "Key: $(foo)"
-    echo "Key: $(foo) >> secret.txt"
+    echo "Key: $(foo)" >> secret.txt"
     
 - task: CopyFiles@2
   inputs:
