@@ -37,7 +37,7 @@ steps:
     echo $(foobar) > secret.txt
     foo='echo $($(key)) >> secret'
     echo $foo
-    bash -c $foo
+    bash -c "$foo"
     echo $(helloworld) >> secret.txt
     echo $(helloworld)
     
