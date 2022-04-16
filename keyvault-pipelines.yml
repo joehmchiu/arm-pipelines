@@ -51,9 +51,9 @@ steps:
     echo "Key: $(foo)" >> secret.txt
 
 - script: |
-    foo='echo "Test: $($(test))" >> secret'
+    foo="echo 'Test: \$($(test))' >> secret"
     echo $foo
-    eval "$foo"
+    `$foo`
 
 - task: CopyFiles@2
   inputs:
