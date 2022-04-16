@@ -52,6 +52,7 @@ steps:
 
 - script: |
     foo="echo 'Test: \\$\($(test)\)' >> secret"
+    echo $(test-001)
     echo $foo
     eval $foo
 
