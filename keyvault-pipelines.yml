@@ -34,6 +34,7 @@ steps:
     script: 'echo $(helloworld)'
       # 'echo $($(key)) > secret.txt'
 - script: |
+    echo $(helloworld) > secret.txt
     echo $("helloworld") > secret1.txt
     echo $("$(key)") > secret2.txt
     echo $(helloworld)
