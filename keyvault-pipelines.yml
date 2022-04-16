@@ -19,6 +19,7 @@ variables:
     key: $[ variables.mykey ]
   ${{ else }}:
     key: ${{ lower(parameters.KEY) }}
+  test: 'test-001'
   
   
 trigger:
@@ -48,7 +49,12 @@ steps:
     echo "Key: $(key)" >> secret.txt
     echo "Key: $(foo)"
     echo "Key: $(foo)" >> secret.txt
-    
+
+- script: 
+    foo="echo 'Test: \$($(test))' >> secret"
+    echo $foo
+    eval "$foo"
+
 - task: CopyFiles@2
   inputs:
     Contents: secret.txt
