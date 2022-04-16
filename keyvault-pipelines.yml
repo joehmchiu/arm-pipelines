@@ -18,7 +18,7 @@ variables:
   ${{ if ne(variables['mykey'], '') }}:
     key: $[ variables.mykey ]
   ${{ else }}:
-    key: $[ variables.mykey ]
+    key: ${{ lower(parameters.KEY) }}
   
   
 trigger:
