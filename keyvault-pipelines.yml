@@ -16,8 +16,8 @@ parameters:
 variables:
   env: ${{ lower(parameters.ENV) }}
   key:
-  ${{ if ne(variables['key'], '') }}:
-    value: ${{ variables.key }}
+  ${{ if ne(variables['mykey'], '') }}:
+    value: ${{ variables.mykey }}
   ${{ else }}:
     value: ${{ lower(parameters.KEY) }}
   
