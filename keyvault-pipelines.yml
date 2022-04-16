@@ -39,7 +39,7 @@ steps:
     
 - script: |
     echo $(foobar) > secret.txt
-    foo="echo \$($(key)) >> secret"
+    foo="echo '\$($(key))' >> secret"
     echo $foo
     eval $foo
     echo "helloworld: $(helloworld)" >> secret.txt
