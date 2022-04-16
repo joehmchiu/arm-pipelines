@@ -15,10 +15,10 @@ parameters:
 # Set variables
 variables:
   env: ${{ lower(parameters.ENV) }}
-  ${{ if ne( variables['mykey'], '') }}:
-    key: $[ variables.mykey ]
-  ${{ else }}:
+  ${{ if eq( variables['mykey'], '') }}:
     key: ${{ lower(parameters.KEY) }}
+  ${{ else }}:
+    key: $[ variables.mykey ]
   
   
 trigger:
