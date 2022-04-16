@@ -32,8 +32,8 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      'echo $($(key))'
-      'echo $($(key)) > secret.txt'
+      'echo $(helloworld)'
+      # 'echo $($(key)) > secret.txt'
 
 - task: CopyFiles@2
   inputs:
