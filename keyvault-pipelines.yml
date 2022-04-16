@@ -35,12 +35,10 @@ steps:
       # 'echo $($(key)) > secret.txt'
 - script: |
     echo $(foobar) > secret.txt
-    echo $("helloworld") > secret1.txt
-    echo $($(key)) > secret2.txt
-    echo $("$(key)") > secret3.txt
+    foo='\$($(key))'
+    bash -c $foo >> secret.txt
     echo $(helloworld) >> secret.txt
     echo $(helloworld)
-    echo $("$(key)")
     
 - task: CopyFiles@2
   inputs:
