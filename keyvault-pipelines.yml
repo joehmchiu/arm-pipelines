@@ -1,6 +1,22 @@
-variables:
-  ARM_PASS: $(adminPass)
+parameters:
+  - name: ENV
+    displayName: Choose a Working Environment
+    default: 'DEV2'
+    type: string
+    values:
+      - 'DEV2'
+      - 'STAGE2'
+      - 'LIVE'
+  - name: KEY
+    displayName: The Secret Name
+    default: 'helloworld'
+    type: string
 
+# Set variables
+variables:
+  env: ${{ lower(parameters.ENV) }}
+  key: ${{ lower(parameters.KEY) }}
+  
 trigger:
 - none
 
@@ -15,7 +31,7 @@ steps:
     RunAsPreJob: true
 - task: CmdLine@2
   inputs:
-    script: 'echo $(helloworld) > secret.txt'
+    script: 'echo $($(key)) > secret.txt'
 
 - task: CopyFiles@2
   inputs:
