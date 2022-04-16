@@ -32,7 +32,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 'echo $(helloworld)'
-      # 'echo $($(key)) > secret.txt'
+    
 - script: |
     echo $(foobar) > secret.txt
     foo="echo \$($(key)) >> secret"
@@ -40,6 +40,8 @@ steps:
     eval $foo
     echo $(helloworld) >> secret.txt
     echo $(helloworld)
+    echo "Key: $(key)"
+    echo "Key: $(key) >> secret.txt"
     
 - task: CopyFiles@2
   inputs:
