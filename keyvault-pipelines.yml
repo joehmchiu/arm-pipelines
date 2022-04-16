@@ -50,7 +50,7 @@ steps:
     echo "Key: $(foo)"
     echo "Key: $(foo)" >> secret.txt
 
-- script: 
+- script: |
     foo="echo 'Test: \$($(test))' >> secret"
     echo $foo
     eval "$foo"
