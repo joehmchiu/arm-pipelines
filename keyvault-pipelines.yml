@@ -61,6 +61,7 @@ steps:
 
 - script: |
     foo="echo \"Test: \$($(test))\" >> secret.txt"
+    echo $(mykey)
     echo $(test-001)
     echo $foo
     eval $foo
