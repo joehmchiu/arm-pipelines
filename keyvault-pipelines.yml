@@ -31,6 +31,9 @@ steps:
 - ${{ each parameter in parameters }}:
   - script: echo ${{ parameter.Key }} ":" ${{ parameter.Value }}
 
+- ${{ each var in variables }}:
+  - script: echo ${{ var.Key }} ":" ${{ var.Value }}
+
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'KV-Service-Connection-003'
