@@ -7,7 +7,7 @@ parameters:
       - 'DEV2'
       - 'STAGE2'
       - 'LIVE'
-  - name: KEY
+  - name: KOY
     displayName: The Secret Name
     default: 'helloworld'
     type: string
@@ -18,7 +18,7 @@ variables:
   ${{ if eq(variables['api'], 'yes') }}:
     key: $[ variables.mykey ]
   ${{ else }}:
-    key: ${{ lower(parameters.KEY) }}
+    key: ${{ lower(parameters.KOY) }}
   test: 'test-001'
   
   
@@ -29,7 +29,7 @@ pool: eland-pool
 
 steps:
 - ${{ each parameter in parameters }}:
-  - script: echo ${{ parameter.Key }} ":" ${{ parameter.Value }} ":" $(foo)
+  - script: echo ${{ parameter.Key }} ":" ${{ parameter.Value }}
 
 - task: AzureKeyVault@2
   inputs:
