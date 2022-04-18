@@ -15,7 +15,7 @@ parameters:
 # Set variables
 variables:
   env: ${{ lower(parameters.ENV) }}
-  ${{ if ne(variables['mykey'], '') }}:
+  ${{ if eq(variables['api'], 'yes') }}:
     key: $[ variables.mykey ]
   ${{ else }}:
     key: ${{ lower(parameters.KEY) }}
@@ -28,6 +28,9 @@ trigger:
 pool: eland-pool
 
 steps:
+- ${{ each parameter in parameters }}:
+  - script: echo ${{ parameter.Key }} ":" ${{ parameter.Value }} ":" $(foo)
+
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'KV-Service-Connection-003'
