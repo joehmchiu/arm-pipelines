@@ -87,7 +87,6 @@ stages:
 #         deploymentMethod: 'runFromPackage'
 #         # package: '$(Pipeline.Workspace)\drop\*.zip'
 
-stages:
 - stage: WebApp
   displayName: Deploy Web App
 
