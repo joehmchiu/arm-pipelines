@@ -1,4 +1,11 @@
 parameters:
+- name: RG
+  displayName: App Resouce Group
+  type: string
+  default: new-transformer-dev2-identity-app-rg
+  values:
+  - new-transformer-dev2-identity-app-rg
+
 - name: APP
   displayName: App Server Name
   type: string
@@ -68,14 +75,27 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
 
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    #   artifact: drop
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: shared
 
-    - task: AzureWebApp@1
-      inputs:
-        azureSubscription: ${{ parameters.SUB }}
-        appType: 'webApp'
-        appName: ${{ parameters.APP }}
-        package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        deploymentMethod: 'runFromPackage'
-        # package: '$(Pipeline.Workspace)\drop\*.zip'
+#     - task: AzureWebApp@1
+#       inputs:
+#         azureSubscription: ${{ parameters.SUB }}
+#         appType: 'webApp'
+#         appName: ${{ parameters.APP }}
+#         package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#         deploymentMethod: 'runFromPackage'
+#         # package: '$(Pipeline.Workspace)\drop\*.zip'
+
+stages:
+- stage: WebApp
+  displayName: Deploy Web App
+
+  jobs:
+  - job: Deploy
+    displayName: Deploy Package to Web App Server
+    pool: eland-pool
+    steps:
+      - script: |
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/shared/$(Build.BuildId).zip
+
