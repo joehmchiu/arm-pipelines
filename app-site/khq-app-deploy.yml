@@ -74,6 +74,6 @@ stages:
     - task: AzureWebApp@1
       inputs:
         azureSubscription: ${{ parameters.SUB }}
-        appName: '${{ parameters.APP }}'
+        appName: ${{ parameters.APP }}
         package: '$(Pipeline.Workspace)\drop\*.zip'
     
