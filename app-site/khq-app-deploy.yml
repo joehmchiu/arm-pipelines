@@ -96,5 +96,5 @@ stages:
     pool: eland-pool
     steps:
       - script: |
-          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/shared/$(Build.BuildId).zip
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)\shared\$(Build.BuildId).zip
 
