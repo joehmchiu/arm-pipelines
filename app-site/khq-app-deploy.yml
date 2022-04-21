@@ -9,9 +9,9 @@ parameters:
 - name: SUB
   displayName: Subscription
   type: string
-  default: dev2
+  default: demo-connection
   values:
-  - dev2
+  - demo-connection
 
 # specific path build
 trigger:
@@ -75,6 +75,6 @@ stages:
     - task: AzureWebApp@1
       inputs:
         azureSubscription: ${{ parameters.SUB }}
-        appName: '$(parameters.APP)'
+        appName: '${{ parameters.APP }}'
         package: '$(Pipeline.Workspace)\drop\*.zip'
     
