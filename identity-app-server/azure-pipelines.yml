@@ -1,0 +1,56 @@
+# devops: Transformer Deployment 
+
+parameters:
+  - name: ENV
+    displayName: Choose a Working Environment
+    default: 'DEV2'
+    type: string
+    values:
+      - 'DEV2'
+      - 'STAGE2'
+  - name: PREFIX
+    displayName: Prefix the Source Name
+    default: 'Transformer'
+    type: string
+
+# Set variables
+variables:
+  env: ${{ lower(parameters.ENV) }}
+  prefix: ${{ lower(parameters.PREFIX) }}
+  workspace: '/tmp/identity-app-server-workspace'
+
+pr:
+  branches:
+    include:
+    - release/*
+
+trigger: 
+- main
+
+pool: karbon-pool
+
+stages:
+- stage: PreTasks
+  displayName: Pre Tasks
+  jobs:
+  - job: init
+    displayName: Display the file structure
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'identity-app-server/'
+        Contents: '**'
+        TargetFolder: '$(workspace)'
+    - script: |
+        $(workspace)/bin/drawit.sh azp
+        $(workspace)/bin/drawit.sh peanut
+        dir
+        pwd
+        echo '$(workspace)'
+        echo '$(Agent.BuildDirectory)'
+        echo '$(System.DefaultWorkingDirectory)'
+        echo "{$(env),$(prefix)} - update #003"
+        echo "Build Reason: $(variables['Build.Reason'])"
+
+
+

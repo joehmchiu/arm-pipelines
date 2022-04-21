@@ -1,0 +1,20 @@
+
+trigger:
+- none
+
+pool: karbon-pool
+
+steps:
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'webapp-linux-managed-mysql/'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'azure-connection-manager'
+    subscriptionId: '418f79d8-2c58-4ec6-974c-7ac5d4713848'
+    action: 'DeleteRG'
+    resourceGroupName: 'rg-arm-test-001'
+    location: 'australiaeast'

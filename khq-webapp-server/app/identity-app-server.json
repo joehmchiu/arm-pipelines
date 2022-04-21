@@ -1,0 +1,207 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_khq_identity_app_name": {
+            "defaultValue": "dev-khq-identity-app",
+            "type": "String"
+        },
+        "serverfarms_khq_identity_app_service_plan_name": {
+            "defaultValue": "/subscriptions/f75a4a4f-13c2-4338-899d-9b21afaadb4d/resourceGroups/khq-dev-identity/providers/Microsoft.Web/serverfarms/khq-dev-identity-app-service-plan",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('sites_khq_identity_app_name')]",
+            "location": "West US",
+            "tags": {
+                "hidden-related:/subscriptions/f75a4a4f-13c2-4338-899d-9b21afaadb4d/resourceGroups/khq-dev-identity/providers/Microsoft.Web/serverFarms/khq-dev-identity-app-service-plan": "empty"
+            },
+            "kind": "app",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_khq_identity_app_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_khq_identity_app_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_khq_identity_app_service_plan_name')]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "5FA9E82930D0EE55A26247A2AE4712B7621C26E401133767F6743D11E8559492",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_khq_identity_app_name'), '/ftp')]",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_khq_identity_app_name'))]"
+            ],
+            "tags": {
+                "hidden-related:/subscriptions/f75a4a4f-13c2-4338-899d-9b21afaadb4d/resourceGroups/khq-dev-identity/providers/Microsoft.Web/serverFarms/khq-dev-identity-app-service-plan": "empty"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_khq_identity_app_name'), '/scm')]",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_khq_identity_app_name'))]"
+            ],
+            "tags": {
+                "hidden-related:/subscriptions/f75a4a4f-13c2-4338-899d-9b21afaadb4d/resourceGroups/khq-dev-identity/providers/Microsoft.Web/serverFarms/khq-dev-identity-app-service-plan": "empty"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_khq_identity_app_name'), '/web')]",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_khq_identity_app_name'))]"
+            ],
+            "tags": {
+                "hidden-related:/subscriptions/f75a4a4f-13c2-4338-899d-9b21afaadb4d/resourceGroups/khq-dev-identity/providers/Microsoft.Web/serverFarms/khq-dev-identity-app-service-plan": "empty"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v6.0",
+                "phpVersion": "5.6",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2022",
+                "httpLoggingEnabled": true,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": true,
+                "publishingUsername": "$dev-khq-identity-app",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 4050,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.0",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 0,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_khq_identity_app_name'), '/', parameters('sites_khq_identity_app_name'), '.azurewebsites.net')]",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_khq_identity_app_name'))]"
+            ],
+            "properties": {
+                "siteName": "dev-khq-identity-app",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/siteextensions",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_khq_identity_app_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
+            "location": "West US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_khq_identity_app_name'))]"
+            ]
+        }
+    ]
+}
+

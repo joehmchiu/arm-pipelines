@@ -1,0 +1,80 @@
+parameters:
+- name: APP
+  displayName: App Server Name
+  type: string
+  default: new-transformer-dev2-identity-app
+  values:
+  - new-transformer-dev2-identity-app
+
+- name: SUB
+  displayName: Subscription
+  type: string
+  default: dev2
+  values:
+  - dev2
+
+# specific path build
+trigger:
+- none
+
+variables:
+  vmImageName: 'windows-latest'
+  workingDirectory: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  testState: false
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo $(workingDirectory)
+          echo $(System.DefaultWorkingDirectory)
+          ls -la /d/a1s/
+      env:
+        SECRET: "foobar"
+
+    - task: UseDotNet@2
+      displayName: 'Use .NET 6 Core SDK'
+      inputs:
+        packageType: 'sdk'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+        version: '6.0.x'
+        includePreviewVersions: true
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: |
+          $(workingDirectory)/*.csproj
+        arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: ${{ parameters.SUB }}
+        appName: '$(parameters.APP)'
+        package: '$(Pipeline.Workspace)\drop\*.zip'
+    

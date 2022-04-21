@@ -1,0 +1,101 @@
+# devops: Transformer Deployment 
+
+parameters:
+  - name: ENV
+    displayName: Choose a Working Environment
+    default: 'DEV2'
+    type: string
+    values:
+      - 'DEV2'
+      - 'STAGE2'
+      - 'SHARED'
+  - name: CNAME
+    displayName: DNS CNAME
+    default: 'foobar'
+    type: string
+  - name: PREFIX
+    displayName: Prefix the Source Name
+    default: 'new-transformer'
+    type: string
+
+# Set variables
+variables:
+  env: ${{ lower(parameters.ENV) }}
+  cname: ${{ lower(parameters.CNAME) }}
+  prefix: ${{ lower(parameters.PREFIX) }}
+  workspace: '/tmp/app-server-workspace'
+
+pr:
+  branches:
+    include:
+    - release/*
+
+trigger: 
+- main
+
+pool: karbon-pool
+
+stages:
+- stage: PreTasks
+  displayName: Pre Tasks
+  jobs:
+  - job: init
+    displayName: Display the file structure
+    steps:
+    - task: DeleteFiles@1
+      inputs:
+        SourceFolder: '$(workspace)'
+        Contents: '**' 
+        RemoveSourceFolder: true
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'khq-webapp-server/'
+        Contents: '**'
+        TargetFolder: '$(workspace)'
+    - script: |
+        $(workspace)/bin/drawit.sh azp
+        $(workspace)/bin/drawit.sh peanut
+        dir
+        pwd
+        echo '$(workspace)'
+        echo '$(Agent.BuildDirectory)'
+        echo '$(System.DefaultWorkingDirectory)'
+        echo "{$(env),$(prefix)} - update #foo-033"
+        echo "Build Reason: $(variables['Build.Reason'])"
+
+- stage: StageApp
+  displayName: Deploy App Service
+  jobs:
+  - job: deploy
+    displayName: Deploy the App Service
+    steps:
+    - script: |
+        cd $(workspace)
+        ./bin/drawit.sh azcli
+        cd $(workspace)/app
+        ./app-azcli.sh $(env) $(prefix) 
+
+- stage: StageDNS
+  displayName: DNS CNAME
+  jobs:
+  - job: deploy
+    displayName: Create DNS CNAME
+    steps:
+    - script: |
+        cd $(workspace)
+        ./bin/drawit.sh azcli
+        cd $(workspace)/app
+        ./add-dns-cname.sh $(env) $(prefix) $(cname)
+
+
+- stage: StageDone
+  displayName: Deployment Complete
+  jobs:
+  - job: complete
+    displayName: Post Tasks for Deployment 
+    steps:
+    - script: |
+        echo "Task is done!"
+        $(workspace)/bin/drawit.sh nomonday
+        rm -rf $(workspace)
+
