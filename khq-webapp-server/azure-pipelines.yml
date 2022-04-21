@@ -33,7 +33,7 @@ pr:
 trigger: 
 - main
 
-pool: karbon-pool
+pool: eland-pool
 
 stages:
 - stage: PreTasks
