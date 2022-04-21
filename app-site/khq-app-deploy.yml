@@ -30,8 +30,8 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(vmImageName)
+    pool: eland-pool
+      # vmImage: $(vmImageName)
 
     steps:
     - task: Bash@3
