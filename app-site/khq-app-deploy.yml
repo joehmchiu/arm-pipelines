@@ -40,7 +40,6 @@ stages:
         script: |
           echo $(workingDirectory)
           echo $(System.DefaultWorkingDirectory)
-          ls -la /d/a1s/
       env:
         SECRET: "foobar"
 
