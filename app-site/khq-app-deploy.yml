@@ -77,6 +77,5 @@ stages:
         appType: 'webApp'
         appName: ${{ parameters.APP }}
         package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        deploymentMethod: 'zipDeploy'
+        deploymentMethod: 'runFromPackage'
         # package: '$(Pipeline.Workspace)\drop\*.zip'
-
