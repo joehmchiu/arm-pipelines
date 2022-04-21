@@ -30,8 +30,8 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool: eland-pool
-      # vmImage: $(vmImageName)
+    pool:
+      vmImage: $(vmImageName)
 
     steps:
     - task: Bash@3
@@ -68,12 +68,13 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
 
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
+    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    #   artifact: drop
 
     - task: AzureWebApp@1
       inputs:
         azureSubscription: ${{ parameters.SUB }}
         appName: ${{ parameters.APP }}
-        package: '$(Pipeline.Workspace)\drop\*.zip'
+        package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        # package: '$(Pipeline.Workspace)\drop\*.zip'
     
