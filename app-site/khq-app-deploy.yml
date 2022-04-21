@@ -74,7 +74,9 @@ stages:
     - task: AzureWebApp@1
       inputs:
         azureSubscription: ${{ parameters.SUB }}
+        appType: 'webApp'
         appName: ${{ parameters.APP }}
         package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        deploymentMethod: 'zipDeploy'
         # package: '$(Pipeline.Workspace)\drop\*.zip'
-    
+
