@@ -98,4 +98,11 @@ stages:
         echo "Task is done!"
         $(workspace)/bin/drawit.sh nomonday
         rm -rf $(workspace)
-
+- task: TriggerPipeline@2
+  inputs:
+    serviceConnection: 'JC-Pipeline-Trigger'
+    project: '9d8434ac-13ac-4f29-8c66-90cc9b3ee745'
+    Pipeline: 'Build'
+    buildDefinition: '26'
+    Branch: 'master'
+    buildapiversion: '6.0'
