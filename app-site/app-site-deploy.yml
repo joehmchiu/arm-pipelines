@@ -83,11 +83,11 @@ stages:
 
     - task: ArchiveFiles@2
         inputs:
-            rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\$(pack)'
-            includeRootFolder: false
-            archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)\$(pack).zip'
-            replaceExistingArchive: true
+          rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\$(pack)'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)\$(pack).zip'
+          replaceExistingArchive: true
 
     - publish: $(Build.ArtifactStagingDirectory)/$(pack).zip
       artifact: $(drop)
