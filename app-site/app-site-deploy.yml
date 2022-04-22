@@ -1,24 +1,24 @@
 parameters:
-- name: RG
-  displayName: App Resouce Group
-  type: string
-  default: new-transformer-dev2-identity-app-rg
-  values:
-  - new-transformer-dev2-identity-app-rg
+  - name: RG
+    displayName: App Resouce Group
+    type: string
+    default: new-transformer-dev2-identity-app-rg
+    values:
+    - new-transformer-dev2-identity-app-rg
 
-- name: APP
-  displayName: App Server Name
-  type: string
-  default: new-transformer-dev2-identity-app
-  values:
-  - new-transformer-dev2-identity-app
+  - name: APP
+    displayName: App Server Name
+    type: string
+    default: new-transformer-dev2-identity-app
+    values:
+    - new-transformer-dev2-identity-app
 
-- name: SUB
-  displayName: Subscription
-  type: string
-  default: demo-connection
-  values:
-  - demo-connection
+  - name: SUB
+    displayName: Subscription
+    type: string
+    default: demo-connection
+    values:
+    - demo-connection
 
 # specific path build
 trigger:
@@ -89,7 +89,6 @@ stages:
         archiveType: zip
         archiveFile: '$(Build.ArtifactStagingDirectory)\$(pack).zip'
         replaceExistingArchive: true
-
 
     - publish: $(Build.ArtifactStagingDirectory)/$(pack).zip
       artifact: $(drop)

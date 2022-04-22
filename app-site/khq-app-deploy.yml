@@ -78,15 +78,6 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(package)
       artifact: $(drop)
 
-#     - task: AzureWebApp@1
-#       inputs:
-#         azureSubscription: ${{ parameters.SUB }}
-#         appType: 'webApp'
-#         appName: ${{ parameters.APP }}
-#         package: $(Build.ArtifactStagingDirectory)/$(package)
-#         deploymentMethod: 'runFromPackage'
-#         # package: '$(Pipeline.Workspace)\$(drop)\*.zip'
-
 - stage: WebApp
   displayName: Deploy Web App
 
