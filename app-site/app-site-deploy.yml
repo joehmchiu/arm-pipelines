@@ -85,7 +85,7 @@ stages:
         inputs:
           rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\$(pack)'
           includeRootFolder: false
-          archiveType: 'zip'
+          archiveType: zip
           archiveFile: '$(Build.ArtifactStagingDirectory)\$(pack).zip'
           replaceExistingArchive: true
 
