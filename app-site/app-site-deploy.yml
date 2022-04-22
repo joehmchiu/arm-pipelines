@@ -39,7 +39,7 @@ stages:
 
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build, Publish and Archive
     pool:
       vmImage: $(vmImageName)
 
