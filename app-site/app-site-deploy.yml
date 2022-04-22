@@ -25,10 +25,13 @@ trigger:
 - none
 
 variables:
-  vmImageName: 'windows-latest'
+  vmImageName: 'windows-2022'
   workspace: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
-  package: 'app.zip'
   drop: 'shared'
+  package: 'app.zip'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
 
 stages:
 - stage: BuildApp
@@ -47,45 +50,35 @@ stages:
         script: |
           echo $(workingDirectory)
           echo $(System.DefaultWorkingDirectory)
-      env:
-        SECRET: "foobar"
 
     - task: UseDotNet@2
       displayName: 'Use .NET 6.0.x'
       inputs:
         packageType: 'sdk'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
         version: '6.0.x'
-#         includePreviewVersions: true
 
-    - task: DotNetCoreCLI@2
-      displayName: Build and Release Application
+    # Add a Command To List the Current .NET SDKs (Sanity Check)
+    - task: CmdLine@2
       inputs:
-        command: 'build'
-        projects: |
-          $(workspace)/*.csproj
-        arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+        script: 'dotnet --list-sdks'
 
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(package)'
-        replaceExistingArchive: true
+        restoreSolution: '$(solution)'
 
-    - publish: $(Build.ArtifactStagingDirectory)/$(package)
-      artifact: $(drop)
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\$(drop)\$(package)" /p:DeployIisAppPath="Default Web Site"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
-#     - task: AzureWebApp@1
-#       inputs:
-#         azureSubscription: ${{ parameters.SUB }}
-#         appType: 'webApp'
-#         appName: ${{ parameters.APP }}
-#         package: $(Build.ArtifactStagingDirectory)/$(package)
-#         deploymentMethod: 'runFromPackage'
-#         # package: '$(Pipeline.Workspace)\$(drop)\*.zip'
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
 - stage: WebApp
   displayName: Deploy Web App
