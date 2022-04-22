@@ -31,7 +31,7 @@ variables:
   drop: 'shared'
 
 stages:
-- stage: Build WebApp
+- stage: BuildApp
   displayName: Compile Web Application
 
   jobs:
