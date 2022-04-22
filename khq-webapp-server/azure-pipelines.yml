@@ -104,6 +104,8 @@ stages:
   jobs:
   - job: next
     displayName: Next Task for Build, Publish and Deploy 
+    pool:
+      vmImage: 'windows-2022'
     steps:
     - task: TriggerPipeline@2
       inputs:
