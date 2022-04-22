@@ -28,7 +28,7 @@ variables:
   vmImageName: 'windows-2022'
   workspace: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
   drop: 'shared'
-  package: 'app.zip'
+  pack: 'app'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -71,7 +71,8 @@ stages:
     - task: VSBuild@1
       inputs:
         solution: '$(solution)'
-        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\$(package)" /p:DeployIisAppPath="Default Web Site"'
+        msbuildArgs: '/p:DeployOnBuild=True /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=$(Build.ArtifactStagingDirectory)\$(pack)'
+        # msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\$(pack).zip" /p:DeployIisAppPath="Default Web Site"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
 
@@ -80,7 +81,15 @@ stages:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
 
-    - publish: $(Build.ArtifactStagingDirectory)/$(package)
+    - task: ArchiveFiles@2
+        inputs:
+            rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\$(pack)'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)\$(pack).zip'
+            replaceExistingArchive: true
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(pack).zip
       artifact: $(drop)
 
 - stage: WebApp
@@ -94,6 +103,6 @@ stages:
       - download: current
         artifact: $(drop)
       - script: |
-          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/$(drop)/$(package)
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/$(drop)/$(pack).zip
           echo "Build and Release done!"
 
