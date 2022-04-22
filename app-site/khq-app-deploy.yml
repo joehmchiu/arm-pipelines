@@ -98,6 +98,6 @@ stages:
       - download: current
         artifact: $(drop)
       - script: |
-          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)\$(drop)\$(package)
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/(drop)/$(package)
           echo "Build and Release done!"
 
