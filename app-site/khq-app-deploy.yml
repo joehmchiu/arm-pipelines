@@ -26,13 +26,13 @@ trigger:
 
 variables:
   vmImageName: 'windows-latest'
-  workingDirectory: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
-  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
-  testState: false
+  workspace: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
+  package: 'app.zip'
+  drop: 'shared'
 
 stages:
-- stage: Build
-  displayName: Build stage
+- stage: Build WebApp
+  displayName: Compile Web Application
 
   jobs:
   - job: Build
@@ -55,15 +55,15 @@ stages:
       inputs:
         packageType: 'sdk'
         installationPath: $(Agent.ToolsDirectory)/dotnet
-        version: '6.0.x'
+        version: '3.1'
         includePreviewVersions: true
 
     - task: DotNetCoreCLI@2
-      displayName: Build
+      displayName: Build and Release Application
       inputs:
         command: 'build'
         projects: |
-          $(workingDirectory)/*.csproj
+          $(workspace)/*.csproj
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
     - task: ArchiveFiles@2
@@ -72,20 +72,20 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(package)'
         replaceExistingArchive: true
 
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: shared
+    - publish: $(Build.ArtifactStagingDirectory)/$(package)
+      artifact: $(drop)
 
 #     - task: AzureWebApp@1
 #       inputs:
 #         azureSubscription: ${{ parameters.SUB }}
 #         appType: 'webApp'
 #         appName: ${{ parameters.APP }}
-#         package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#         package: $(Build.ArtifactStagingDirectory)/$(package)
 #         deploymentMethod: 'runFromPackage'
-#         # package: '$(Pipeline.Workspace)\drop\*.zip'
+#         # package: '$(Pipeline.Workspace)\$(drop)\*.zip'
 
 - stage: WebApp
   displayName: Deploy Web App
@@ -95,6 +95,9 @@ stages:
     displayName: Deploy Package to Web App Server
     pool: eland-pool
     steps:
+      - download: current
+        artifact: $(drop)
       - script: |
-          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src '$(Pipeline.Workspace)\shared\$(Build.BuildId).zip'
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)\$(drop)\$(package)
+          echo "Build and Release done!"
 
