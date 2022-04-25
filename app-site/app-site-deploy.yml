@@ -25,7 +25,6 @@ trigger:
 - none
 
 variables:
-  vmImageName: 'windows-2022'
   workspace: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
   drop: 'shared'
   pack: 'app'
@@ -35,13 +34,12 @@ variables:
 
 stages:
 - stage: BuildApp
-  displayName: Compile Web Application
-
+  displayName: Build Web Application
   jobs:
   - job: Build
     displayName: Build, Publish and Archive
     pool:
-      vmImage: $(vmImageName)
+      vmImage: 'windows-2022'
 
     steps:
     - task: Bash@3
@@ -95,7 +93,6 @@ stages:
 
 - stage: WebApp
   displayName: Deploy Web App
-
   jobs:
   - job: Deploy
     displayName: Deploy Package to Web App Server
