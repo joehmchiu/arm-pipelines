@@ -2,15 +2,17 @@ parameters:
   - name: RG
     displayName: App Resouce Group
     type: string
-    default: new-transformer-dev2-identity-app-rg
+    default: new-dev2-identity-app-rg
     values:
+    - new-dev2-identity-app-rg
     - new-transformer-dev2-identity-app-rg
 
   - name: APP
     displayName: App Server Name
     type: string
-    default: new-transformer-dev2-identity-app
+    default: new-dev2-identity-app
     values:
+    - new-dev2-identity-app
     - new-transformer-dev2-identity-app
 
   - name: SUB
