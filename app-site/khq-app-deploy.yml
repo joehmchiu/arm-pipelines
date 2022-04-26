@@ -27,7 +27,7 @@ trigger:
 variables:
   vmImageName: 'windows-latest'
   workspace: '$(System.DefaultWorkingDirectory)\app-site\web-api-001'
-  package: 'app.zip'
+  package: 'app'
   drop: 'shared'
 
 stages:
@@ -61,21 +61,21 @@ stages:
     - task: DotNetCoreCLI@2
       displayName: Build and Release Application
       inputs:
-        command: 'build'
+        command: 'publish'
         projects: |
           $(workspace)/*.csproj
-        arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+        arguments: -o $(System.DefaultWorkingDirectory)/$(package) -c Release
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(package)'
         includeRootFolder: false
         archiveType: zip
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(package)'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(package).zip'
         replaceExistingArchive: true
 
-    - publish: $(Build.ArtifactStagingDirectory)/$(package)
+    - publish: $(Build.ArtifactStagingDirectory)/$(package).zip
       artifact: $(drop)
 
 - stage: WebApp
@@ -89,6 +89,6 @@ stages:
       - download: current
         artifact: $(drop)
       - script: |
-          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/$(drop)/$(package)
+          az webapp deployment source config-zip -g ${{ parameters.RG }} -n ${{ parameters.APP }} --src $(Pipeline.Workspace)/$(drop)/$(package).zip
           echo "Build and Release done!"
 
