@@ -63,7 +63,7 @@ stages:
     - task: DotNetCoreCLI@2
       displayName: Build and Release Application
       inputs:
-        command: 'publish'
+        command: 'build'
         projects: |
           $(workspace)/*.csproj
         arguments: -o $(System.DefaultWorkingDirectory)/$(package) -c Release
