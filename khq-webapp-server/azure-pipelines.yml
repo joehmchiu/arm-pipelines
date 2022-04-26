@@ -99,19 +99,19 @@ stages:
         $(workspace)/bin/drawit.sh nomonday
         rm -rf $(workspace)
 
-- stage: StageNext
-  displayName: Trigger Next Pipelines
-  jobs:
-  - job: next
-    displayName: Next Task for Build, Publish and Deploy 
-    pool:
-      vmImage: 'windows-2022'
-    steps:
-    - task: TriggerPipeline@2
-      inputs:
-        serviceConnection: 'JC-Pipeline-Trigger'
-        project: '9d8434ac-13ac-4f29-8c66-90cc9b3ee745'
-        Pipeline: 'Build'
-        buildDefinition: '26'
-        Branch: 'master'
-        buildapiversion: '6.0'
+# - stage: StageNext
+#   displayName: Trigger Next Pipelines
+#   jobs:
+#   - job: next
+#     displayName: Next Task for Build, Publish and Deploy 
+#     pool:
+#       vmImage: 'windows-2022'
+#     steps:
+#     - task: TriggerPipeline@2
+#       inputs:
+#         serviceConnection: 'JC-Pipeline-Trigger'
+#         project: '9d8434ac-13ac-4f29-8c66-90cc9b3ee745'
+#         Pipeline: 'Build'
+#         buildDefinition: '26'
+#         Branch: 'master'
+#         buildapiversion: '6.0'
