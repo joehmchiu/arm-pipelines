@@ -22,10 +22,7 @@ resources:
   pipelines:
   - pipeline: triggerTest
     source: 'trigger-source-001'
-    trigger: 
-      branches:
-      - feature/foo-001
-      - feature/bar-001
+    trigger: true
 
 pool: eland-pool
 
