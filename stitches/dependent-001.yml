@@ -25,6 +25,7 @@ resources:
     trigger: 
       branches:
       - feature/foo-001
+      - feature/bar-001
 
 pool: eland-pool
 
