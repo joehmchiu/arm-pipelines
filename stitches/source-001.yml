@@ -30,6 +30,6 @@ stages:
     - script: |
         pwd
         ls -ltrhR
-        echo "I am the source to trigger dependent"
+        echo "I am the source to trigger dependent pipeline - trigger-bar-001"
 
 
