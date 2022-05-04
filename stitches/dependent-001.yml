@@ -18,6 +18,12 @@ variables:
 trigger:
 - none
 
+resources:
+  pipelines:
+  - pipeline: triggerTest
+    source: 'trigger-source-001'
+    trigger: true
+
 pool: eland-pool
 
 stages:
@@ -30,6 +36,6 @@ stages:
     - script: |
         pwd
         ls -ltrhR
-        echo "I am the source to trigger dependent pipeline - trigger-dependent-001"
+        echo "I am the dependent pipeline triggered by the source pipeline - trigger-source-001"
 
 
