@@ -26,6 +26,7 @@ stages:
   jobs:
   - job: init
     displayName: Display the file structure
+    steps:
     - script: |
         pwd
         ls -ltrhR
