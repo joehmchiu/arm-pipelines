@@ -1,0 +1,35 @@
+# devops: Transformer Deployment
+
+parameters:
+  - name: ENV
+    displayName: Choose a Working Environment
+    default: 'DEV2'
+    type: string
+    values:
+      - 'DEV2'
+      - 'STAGE2'
+      - 'SHARED'
+
+# Set variables
+variables:
+  env: ${{ lower(parameters.ENV) }}
+  workspace: '/tmp/tf-identify-service-workspace'
+
+trigger:
+- none
+
+pool: eland-pool
+
+stages:
+- stage: PreTasks
+  displayName: Pre Tasks
+  jobs:
+  - job: init
+    displayName: Display the file structure
+    steps:
+    - script: |
+        pwd
+        ls -ltrhR
+        echo "I am the source to trigger dependent pipeline - trigger-bar-001"
+
+
