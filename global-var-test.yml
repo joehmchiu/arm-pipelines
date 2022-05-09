@@ -1,0 +1,32 @@
+trigger:
+- main
+
+parameters:
+  - name: environment
+    displayName: Where to deploy?
+    type: string
+    default: test
+    values:
+    - dev
+    - test
+
+
+pool:
+  vmImage: eland-pool
+
+variables:
+ - group: ${{parameters.environment}}
+
+steps:
+
+- script: |
+    echo $(env)
+    echo $(name)
+  displayName: Step 1 - print version and environment
+
+- script: echo $(password)
+  displayName: Step 2 - print secret
+
+- script: pwd ENV ${{parameters.environment}}
+  displayName: Step 3 - print parameter
+  
