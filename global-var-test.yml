@@ -11,8 +11,7 @@ parameters:
     - test
 
 
-pool:
-  vmImage: eland-pool
+pool: eland-pool
 
 variables:
  - group: ${{parameters.environment}}
