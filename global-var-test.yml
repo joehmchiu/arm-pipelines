@@ -5,11 +5,7 @@ parameters:
   - name: environment
     displayName: Where to deploy?
     type: string
-    default: test
-    values:
-    - dev
-    - test
-
+    default: $(env)
 
 pool: eland-pool
 
