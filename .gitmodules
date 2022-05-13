@@ -1,0 +1,3 @@
+[submodule "azure-tools"]
+	path = azure-tools
+	url = https://github.com/joehmchiu/azure-tools.git
